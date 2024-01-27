@@ -42,11 +42,11 @@ DEBUG = args["debug"]
 #Controls blink behavior
 def LEDBlink(f,rate=BLINKRATE,pin=LEDPin):
     GPIO.output(pin,GPIO.HIGH)
-    f.write(f"{time.time()}\tON\n") 
+    f.write(f"{time.time()-STARTTIME}\tON\n") 
     time.sleep(rate)
 
     GPIO.output(pin,GPIO.LOW)
-    f.write(f"{time.time()}\tOFF\n") 
+    f.write(f"{time.time()-STARTTIME}\tOFF\n") 
     time.sleep(rate)
 
 
@@ -76,12 +76,13 @@ def output():
 def main(runTime):
     
     #time stuff
-    startTime = time.time()
+    global STARTTIME
+    STARTTIME = time.time()
     if DEBUG:
-        print("The start time is: "+str(startTime))
+        print("The start time is: "+str(STARTTIME))
         iterations = 1
 
-    while time.time()- startTime < runTime:
+    while time.time()- STARTTIME < runTime:
         #Checks if the switch is on
         if(GPIO.input(switchPin)): 
             if DEBUG:
