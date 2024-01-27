@@ -57,7 +57,7 @@ def output():
             files = os.listdir("outputs")
             files.sort()
             nmbr = files[-1]
-            nmbr = int(nmbr[nmbr.rindex('a')+1])
+            nmbr = int(nmbr[(nmbr.rindex('a')+1)])+1
             f = open("outputs/data%d.txt" % nmbr,'w')
             return f
         else:
@@ -66,7 +66,7 @@ def output():
             
     else:
         os.mkdir("outputs")
-        output()
+        return output()
 
         
         
