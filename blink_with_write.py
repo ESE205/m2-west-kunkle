@@ -99,17 +99,4 @@ FILE = output()
 main(RUNTIME)
 FILE.close()
 GPIO.cleanup()
-print("Done")
-
-# 
-# >>> %Run blink_with_write.py
-# Traceback (most recent call last):
-#   File "/home/jmw/ESE205/m2-west-kunkle/blink_with_write.py", line 99, in <module>
-#     main(RUNTIME)
-#   File "/home/jmw/ESE205/m2-west-kunkle/blink_with_write.py", line 90, in main
-#     LEDBlink(f=FILE)
-#   File "/home/jmw/ESE205/m2-west-kunkle/blink_with_write.py", line 45, in LEDBlink
-#     f.write(f"{time.time()}\tON\n")
-# AttributeError: 'NoneType' object has no attribute 'write'
-# 
 
