@@ -30,13 +30,17 @@ GPIO.setup(switchPin,GPIO.IN,pull_up_down=GPIO.PUD_UP)
 flags = ap.ArgumentParser(description="Use the --runtime flag to duration the script will run (default is 60) \n")
 flags.add_argument("--runtime",type = float, default = 30.0, help="Duration the script will run in seconds (float)")
 flags.add_argument("--blinkrate",type = float, default = 1.0, help="Set the blink rate of the LED in seconds (float)")
-flags.add_argument("--debug",type = bool, defualt = False, help="Prints: system time, # iterations,and switch state (boolean)")
+flags.add_argument("--debug",type = bool, default = False, help="Prints: system time, # iterations,and switch state (boolean)")
 #Dictionary to store command line args
 args = flags.parse_args()
 args = vars(args)
 
+RUNTIME = args["runtime"]
+BLINKRATE = args["blinkrate"]
+DEBUG = args["debug"]
+
 #Controls blink behavior
-def LEDBlink(rate=1.0,pin=LEDPin,f = file):
+def LEDBlink(f,rate=1.0,pin=LEDPin):
     GPIO.output(pin,GPIO.HIGH)
     time.sleep(rate)
     GPIO.output(pin,GPIO.LOW)
@@ -72,21 +76,27 @@ def main(runTime):
     
     #time stuff
     startTime = time.time()
+    if DEBUG:
+        print("The start time is: "+startTime)
+        iterartions = 1
   
     while time.time()- startTime < runTime:
-        
         #Checks if the switch is on
         if(GPIO.input(switchPin)):
+            if DEBUG:
+                print("The current time is: "+time.time()+"\nIteration: "+iterations+"\nThe LED is On")
+        
             #Blinks
-            LEDBlink(f)
+            LEDBlink(f=file)
             
         else:
-            
+            if DEBUG:
+                print("The current time is: "+time.time()+"\nIteration: "+iterations+"\nThe LED is OFF")
             LEDOff(LEDPin)
         
     
 
 file = ouput()
-main(runTime)
+main(RUNTIME)
 GPIO.cleanup()
 
