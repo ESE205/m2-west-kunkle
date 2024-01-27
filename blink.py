@@ -3,8 +3,8 @@ from time import sleep     # Import the sleep from time module
 GPIO.setwarnings(False)    # Ignore warning for now
 GPIO.setmode(GPIO.BOARD)   # Use physical pin numbering
 
-ITER_COUNT = 15  
-pin1 = 11
+ITER_COUNT = 15 #Nmbr of blinks 
+pin1 = 15 #GPIO OUT LED
 
 GPIO.setup(pin1, GPIO.OUT, initial=GPIO.LOW)   
 
