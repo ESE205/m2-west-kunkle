@@ -6,9 +6,11 @@ import time
 
 import sys
 
+import argparse as ap
+
 #GPIO pins on pi
-switchPin = 0
-LEDPin = 0
+switchPin = 16
+LEDPin = 15
 
 #Set Up for GPIO
 GPIO.setwarnings(False)
@@ -21,20 +23,27 @@ GPIO.setup(switchPin, GPIO.OUT, initial=GPIO.LOW)
 GPIO.setup(LEDPin,GPIO.IN)
 
 
-#Controls blink behavior
-def LEDBlink(rate):
-    pass
-
+#Controls LED behavior
+def LEDOn(LEDPIN):
+    GPIO.output(LEDPIN,GPIO.HIGH)
+    return
+    
+def LEDOff(LEDPIN):
+    GPIO.output(LEDPIN,GPIO.HIGH)
+    return
 
 #Main Method
 def main():
-    #time stuff
-    
+    #Script runs for 60 seconds
     startTime = time.time()
+    while time.time()- startTime < 60.0:
+        #Checks if the switch is on
+        if(GPIO.input(switchPin)
+           #Turns on LED
+           LEDOn(LEDPin)
+        else:
+           LEDOff(LEDPin)
     
-    while time.time()- startTime > runTime:
-        
-        pass
     
 main()
 
