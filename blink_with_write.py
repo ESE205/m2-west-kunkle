@@ -10,8 +10,6 @@ import argparse as ap
 
 import os
 
-
-
 #GPIO pins on pi
 switchPin = 16
 LEDPin = 15
@@ -39,33 +37,36 @@ RUNTIME = args["runtime"]
 BLINKRATE = args["blinkrate"]
 DEBUG = args["debug"]
 
-#Controls blink behavior
-def LEDBlink(f,rate=1.0,pin=LEDPin):
-    GPIO.output(pin,GPIO.HIGH)
-    time.sleep(rate)
-    GPIO.output(pin,GPIO.LOW)
-    time.sleep(rate)
-    
 
+
+#Controls blink behavior
+def LEDBlink(f,rate=BLINKRATE,pin=LEDPin):
+    GPIO.output(pin,GPIO.HIGH)
+    f.write(f"{time.time()}\tON\n") 
+    time.sleep(rate)
+
+    GPIO.output(pin,GPIO.LOW)
+    f.write(f"{time.time()}\tOFF\n") 
+    time.sleep(rate)
 
 
 def output():
     #Creates sequential outputfiles
     if os.path.exists("outputs"):
-        if os.path.exists("outputs/data.txt"):
+        if os.path.exists("outputs/data1.txt"):
             files = os.listdir("outputs")
             files.sort()
             nmbr = files[-1]
             nmbr = int(nmbr[nmbr.rindex('a')+1])
-            f = open("data%d.txt" % nmbr,w)
+            f = open("outputs/data%d.txt" % nmbr,'w')
             return f
         else:
-            f = open("data.txt",w)
+            f = open("outputs/data1.txt",'w')
             return f
             
     else:
         os.mkdir("outputs")
-        ouput()
+        output()
 
         
         
@@ -77,26 +78,38 @@ def main(runTime):
     #time stuff
     startTime = time.time()
     if DEBUG:
-        print("The start time is: "+startTime)
-        iterartions = 1
-  
+        print("The start time is: "+str(startTime))
+        iterations = 1
+
     while time.time()- startTime < runTime:
         #Checks if the switch is on
-        if(GPIO.input(switchPin)):
+        if(GPIO.input(switchPin)): 
             if DEBUG:
-                print("The current time is: "+time.time()+"\nIteration: "+iterations+"\nThe LED is On")
-        
+                print(f"The current time is: {time.time()}\nIterations: {iterations}\nThe Switch is ON")        
             #Blinks
-            LEDBlink(f=file)
-            
-        else:
+            LEDBlink(f=FILE)
             if DEBUG:
-                print("The current time is: "+time.time()+"\nIteration: "+iterations+"\nThe LED is OFF")
-            LEDOff(LEDPin)
-        
+                print(f"The current time is: {time.time()}\nIterations: {iterations}\nThe Swtich is OFF")        
+            
+        if DEBUG:
+            iterations += 1
     
 
-file = ouput()
+FILE = output()
 main(RUNTIME)
+FILE.close()
 GPIO.cleanup()
+print("Done")
+
+# 
+# >>> %Run blink_with_write.py
+# Traceback (most recent call last):
+#   File "/home/jmw/ESE205/m2-west-kunkle/blink_with_write.py", line 99, in <module>
+#     main(RUNTIME)
+#   File "/home/jmw/ESE205/m2-west-kunkle/blink_with_write.py", line 90, in main
+#     LEDBlink(f=FILE)
+#   File "/home/jmw/ESE205/m2-west-kunkle/blink_with_write.py", line 45, in LEDBlink
+#     f.write(f"{time.time()}\tON\n")
+# AttributeError: 'NoneType' object has no attribute 'write'
+# 
 
