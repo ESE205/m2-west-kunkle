@@ -12,38 +12,47 @@ import argparse as ap
 switchPin = 16
 LEDPin = 15
 
+
 #Set Up for GPIO
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BOARD)
 
 #Setup for LED
-GPIO.setup(switchPin, GPIO.OUT, initial=GPIO.LOW)
+GPIO.setup(switchPin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 #Setup for switch
-GPIO.setup(LEDPin,GPIO.IN)
+GPIO.setup(15,GPIO.OUT,initial=GPIO.LOW)
 
 
 #Controls LED behavior
-def LEDOn(LEDPIN):
-    GPIO.output(LEDPIN,GPIO.HIGH)
-    return
+def LEDOn(pin):
+    GPIO.output(pin,GPIO.HIGH)
     
-def LEDOff(LEDPIN):
-    GPIO.output(LEDPIN,GPIO.HIGH)
-    return
+def LEDOff(pin):
+    GPIO.output(pin,GPIO.LOW)
+    
 
 #Main Method
 def main():
-    #Script runs for 60 seconds
+    #Script runs for 30 seconds
     startTime = time.time()
-    while time.time()- startTime < 60.0:
+    
+    while time.time()- startTime < 30.0:
+        
         #Checks if the switch is on
-        if(GPIO.input(switchPin)
+        if(GPIO.input(switchPin)):
+            
            #Turns on LED
-           LEDOn(LEDPin)
+            LEDOn(LEDPin)
+            
         else:
-           LEDOff(LEDPin)
+            
+            LEDOff(LEDPin)
+          
+          
+        
     
     
 main()
+GPIO.cleanup()
 
