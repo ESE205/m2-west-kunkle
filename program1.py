@@ -21,7 +21,7 @@ GPIO.setmode(GPIO.BOARD)
 GPIO.setup(switchPin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 #Setup for switch
-GPIO.setup(15,GPIO.OUT,initial=GPIO.LOW)
+GPIO.setup(LEDPin,GPIO.OUT,initial=GPIO.LOW)
 
 
 #Controls LED behavior
